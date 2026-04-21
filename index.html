@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111118">
 <title>URLリスト</title>
 <link rel="manifest" href="manifest.json">
@@ -38,11 +37,8 @@
     overscroll-behavior: none;
   }
 
-  /* ── ヘッダー ── */
   header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    position: sticky; top: 0; z-index: 100;
     background: rgba(17,17,24,0.94);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -51,9 +47,7 @@
   }
 
   .header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 0.8rem;
   }
 
@@ -61,202 +55,172 @@
   header h1 span { color: var(--accent); }
 
   .count-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    background: var(--accent-dim);
-    color: var(--accent);
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    background: var(--accent-dim); color: var(--accent);
     border: 1px solid rgba(124,106,245,0.3);
-    border-radius: 20px;
-    padding: 0.2rem 0.6rem;
+    border-radius: 20px; padding: 0.2rem 0.6rem;
   }
 
   .search-bar { position: relative; }
-
   .search-bar input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 10px;
     padding: 0.6rem 1rem 0.6rem 2.4rem;
-    color: var(--text);
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 0.88rem;
-    outline: none;
-    transition: border-color 0.2s;
+    color: var(--text); font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.88rem; outline: none; transition: border-color 0.2s;
   }
   .search-bar input:focus { border-color: var(--accent); }
   .search-bar input::placeholder { color: var(--text-dim); }
   .search-icon {
     position: absolute; left: 0.75rem; top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-dim); pointer-events: none; font-size: 0.9rem;
+    transform: translateY(-50%); color: var(--text-dim);
+    pointer-events: none; font-size: 0.9rem;
   }
 
-  /* ── クリップボードバナー ── */
-  .clip-banner {
+  /* ── 受信バナー（ブックマークレット＆クリップボード共用） ── */
+  .recv-banner {
     margin: 0.8rem 1rem 0;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    display: none;
-    animation: slideIn 0.2s ease;
+    border-radius: 12px; overflow: hidden;
+    display: none; animation: slideIn 0.2s ease;
   }
-  .clip-banner.show { display: block; }
+  .recv-banner.show { display: block; }
 
-  .clip-banner-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  .recv-banner-header {
+    display: flex; align-items: center; gap: 0.5rem;
     padding: 0.7rem 1rem;
     background: var(--green-dim);
     border-bottom: 1px solid var(--border);
   }
-
-  .clip-banner-header .label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--green);
-    flex: 1;
+  .recv-banner-header .label {
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--green); flex: 1;
+  }
+  .recv-dismiss {
+    background: none; border: none; color: var(--text-dim);
+    font-size: 1.1rem; cursor: pointer; padding: 0 0.2rem; line-height: 1;
   }
 
-  .clip-dismiss {
-    background: none;
-    border: none;
-    color: var(--text-dim);
-    font-size: 1.1rem;
-    cursor: pointer;
-    padding: 0 0.2rem;
-    line-height: 1;
+  .recv-body { padding: 0.8rem 1rem; }
+
+  .recv-field { margin-bottom: 0.7rem; }
+  .recv-field label {
+    display: block; font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 0.3rem;
   }
-
-  .clip-body { padding: 0.8rem 1rem; }
-
-  .clip-url-preview {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--accent);
-    word-break: break-all;
-    margin-bottom: 0.7rem;
-    line-height: 1.5;
+  .recv-field input {
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 0.6rem 0.85rem; color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif; font-size: 0.88rem;
+    outline: none; transition: border-color 0.2s;
   }
+  .recv-field input:focus { border-color: var(--accent); }
+  .recv-field input.mono { font-family: 'DM Mono', monospace; font-size: 0.8rem; }
 
-  .clip-title-row { margin-bottom: 0.7rem; }
+  .recv-actions { display: flex; gap: 0.6rem; }
 
-  .clip-title-row label {
-    display: block;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 0.3rem;
-  }
-
-  .clip-title-row input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.6rem 0.85rem;
-    color: var(--text);
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 0.88rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .clip-title-row input:focus { border-color: var(--accent); }
-  .clip-title-row input::placeholder { color: var(--text-dim); }
-
-  .clip-actions { display: flex; gap: 0.6rem; }
-
-  /* ── ペーストボタン（常時表示） ── */
-  .paste-bar {
-    margin: 0.8rem 1rem 0;
-  }
-
+  /* ── ペーストボタン ── */
+  .paste-bar { margin: 0.8rem 1rem 0; }
   .paste-btn {
-    width: 100%;
-    padding: 0.75rem;
-    background: var(--surface);
-    border: 1px dashed var(--border);
-    border-radius: 10px;
-    color: var(--text-mid);
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 0.88rem;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    width: 100%; padding: 0.75rem;
+    background: var(--surface); border: 1px dashed var(--border);
+    border-radius: 10px; color: var(--text-mid);
+    font-family: 'Noto Sans JP', sans-serif; font-size: 0.88rem;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
   }
   .paste-btn:active { background: var(--surface2); border-color: var(--accent); color: var(--text); }
 
   /* ── ボタン共通 ── */
   .btn {
-    flex: 1;
-    padding: 0.65rem;
-    border-radius: 8px;
-    border: none;
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.15s, transform 0.1s;
+    flex: 1; padding: 0.65rem; border-radius: 8px; border: none;
+    font-family: 'Noto Sans JP', sans-serif; font-size: 0.85rem;
+    font-weight: 700; cursor: pointer; transition: opacity 0.15s, transform 0.1s;
   }
   .btn:active { transform: scale(0.97); opacity: 0.85; }
   .btn-primary { background: var(--accent); color: #fff; }
   .btn-cancel { background: var(--surface2); color: var(--text-mid); border: 1px solid var(--border); }
 
+  /* ── 手動追加パネル ── */
+  .add-panel {
+    margin: 0.8rem 1rem 0; padding: 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; display: none;
+  }
+  .add-panel.open { display: block; animation: slideIn 0.18s ease; }
+  .add-panel label {
+    display: block; font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 0.3rem;
+  }
+  .add-panel input {
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 0.65rem 0.9rem; color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif; font-size: 0.88rem;
+    outline: none; transition: border-color 0.2s; margin-bottom: 0.8rem;
+  }
+  .add-panel input#inp-url { font-family: 'DM Mono', monospace; font-size: 0.84rem; }
+  .add-panel input:focus { border-color: var(--accent); }
+  .add-panel input::placeholder { color: var(--text-dim); }
+
+  /* ── ブックマークレット設定パネル ── */
+  .setup-panel {
+    margin: 0.8rem 1rem 0; padding: 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; display: none;
+  }
+  .setup-panel.open { display: block; animation: slideIn 0.18s ease; }
+  .setup-title {
+    font-size: 0.85rem; font-weight: 700; margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+  .setup-step {
+    font-size: 0.82rem; color: var(--text-mid); line-height: 1.8;
+    margin-bottom: 0.8rem;
+  }
+  .setup-step strong { color: var(--text); }
+  .bookmarklet-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.8rem;
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--accent); word-break: break-all; line-height: 1.5;
+    margin-bottom: 0.8rem; cursor: pointer; user-select: all;
+  }
+  .copy-hint { font-size: 0.75rem; color: var(--text-dim); text-align: center; }
+
   /* ── リスト ── */
   #list { padding: 0.8rem 1rem 6rem; }
 
   .empty-state {
-    text-align: center;
-    padding: 3rem 1.5rem;
-    color: var(--text-dim);
+    text-align: center; padding: 3rem 1.5rem; color: var(--text-dim);
   }
   .empty-state .icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
   .empty-state p { font-size: 0.88rem; line-height: 1.8; }
   .hint {
-    margin-top: 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 0.9rem 1rem;
-    font-size: 0.82rem;
-    line-height: 1.8;
-    text-align: left;
-    color: var(--text-mid);
+    margin-top: 1rem; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 0.9rem 1rem; font-size: 0.82rem;
+    line-height: 1.8; text-align: left; color: var(--text-mid);
   }
   .hint strong {
-    color: var(--accent);
-    display: block;
-    margin-bottom: 0.2rem;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: 0.2rem;
+    font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase;
   }
 
   .no-results {
-    text-align: center;
-    padding: 3rem 2rem;
-    color: var(--text-dim);
-    font-size: 0.88rem;
-    display: none;
+    text-align: center; padding: 3rem 2rem;
+    color: var(--text-dim); font-size: 0.88rem; display: none;
   }
 
-  /* カード */
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 0.6rem;
-    overflow: hidden;
-    animation: slideIn 0.18s ease;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 0.6rem;
+    overflow: hidden; animation: slideIn 0.18s ease;
   }
 
   @keyframes slideIn {
@@ -267,129 +231,67 @@
   .card-main { display: flex; align-items: stretch; }
 
   .card-link {
-    flex: 1;
-    padding: 0.85rem 1rem;
-    text-decoration: none;
-    color: inherit;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    flex: 1; padding: 0.85rem 1rem;
+    text-decoration: none; color: inherit;
+    min-width: 0; display: flex; flex-direction: column; gap: 0.25rem;
   }
-
   .card-title {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.4;
-    word-break: break-all;
+    font-size: 0.9rem; font-weight: 500;
+    color: var(--text); line-height: 1.4; word-break: break-all;
   }
-
   .card-url {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--accent);
-    opacity: 0.75;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--accent); opacity: 0.75;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 
   .card-actions {
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     border-left: 1px solid var(--border);
   }
-
   .card-btn {
-    flex: 1;
-    width: 48px;
-    background: none;
-    border: none;
-    color: var(--text-dim);
-    font-size: 1rem;
-    cursor: pointer;
+    flex: 1; width: 48px; background: none; border: none;
+    color: var(--text-dim); font-size: 1rem; cursor: pointer;
     transition: background 0.15s, color 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
   }
   .card-btn + .card-btn { border-top: 1px solid var(--border); }
   .card-btn:active { background: var(--surface2); }
   .card-btn.del:active { color: var(--danger); background: var(--danger-dim); }
   .card-btn[disabled] { opacity: 0.2; pointer-events: none; }
 
-  /* FAB（手動追加用） */
+  /* FAB */
+  .fabs {
+    position: fixed; bottom: 1.5rem; right: 1.2rem;
+    z-index: 200; display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-end;
+  }
   .fab {
-    position: fixed;
-    bottom: 1.5rem; right: 1.2rem;
-    z-index: 200;
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    background: var(--accent);
-    border: none;
-    color: #fff;
-    font-size: 1.6rem;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(124,106,245,0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
-    line-height: 1;
+    width: 52px; height: 52px; border-radius: 50%;
+    border: none; color: #fff; font-size: 1.4rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s; line-height: 1;
   }
   .fab:active { transform: scale(0.93); }
-  .fab.open { transform: rotate(45deg); }
-
-  /* 手動追加パネル */
-  .add-panel {
-    margin: 0 1rem;
-    padding: 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    display: none;
+  .fab-main {
+    background: var(--accent);
+    box-shadow: 0 4px 20px rgba(124,106,245,0.45);
   }
-  .add-panel.open { display: block; animation: slideIn 0.18s ease; }
-  .add-panel label {
-    display: block;
-    font-size: 0.7rem; font-weight: 600;
-    letter-spacing: 0.07em; text-transform: uppercase;
-    color: var(--text-dim); margin-bottom: 0.3rem;
-  }
-  .add-panel input {
-    width: 100%;
+  .fab-main.open { transform: rotate(45deg); }
+  .fab-setup {
     background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.65rem 0.9rem;
-    color: var(--text);
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 0.88rem;
-    outline: none;
-    transition: border-color 0.2s;
-    margin-bottom: 0.8rem;
+    border: 1px solid var(--border) !important;
+    color: var(--text-mid); font-size: 1.1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
   }
-  .add-panel input#inp-url { font-family: 'DM Mono', monospace; font-size: 0.84rem; }
-  .add-panel input:focus { border-color: var(--accent); }
-  .add-panel input::placeholder { color: var(--text-dim); }
 
-  /* トースト */
   .toast {
-    position: fixed;
-    bottom: 5.5rem; left: 50%;
+    position: fixed; bottom: 5.5rem; left: 50%;
     transform: translateX(-50%) translateY(10px);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 0.55rem 1.2rem;
-    border-radius: 20px;
-    font-size: 0.82rem;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.2s, transform 0.2s;
-    pointer-events: none;
-    z-index: 300;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); padding: 0.55rem 1.2rem;
+    border-radius: 20px; font-size: 0.82rem; white-space: nowrap;
+    opacity: 0; transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none; z-index: 300;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
@@ -407,28 +309,31 @@
   </div>
 </header>
 
-<!-- クリップボード検出バナー -->
-<div class="clip-banner" id="clip-banner">
-  <div class="clip-banner-header">
-    <span class="label">📋 クリップボードからURLを検出</span>
-    <button class="clip-dismiss" onclick="dismissClip()">✕</button>
+<!-- 受信バナー（ブックマークレット＆クリップボード共用） -->
+<div class="recv-banner" id="recv-banner">
+  <div class="recv-banner-header">
+    <span class="label" id="recv-label">📎 URLを受信</span>
+    <button class="recv-dismiss" onclick="dismissRecv()">✕</button>
   </div>
-  <div class="clip-body">
-    <div class="clip-url-preview" id="clip-url-preview"></div>
-    <div class="clip-title-row">
-      <label>タイトル（任意）</label>
-      <input type="text" id="clip-title-input" placeholder="省略するとURLがタイトルになります">
+  <div class="recv-body">
+    <div class="recv-field">
+      <label>タイトル</label>
+      <input type="text" id="recv-title">
     </div>
-    <div class="clip-actions">
-      <button class="btn btn-cancel" onclick="dismissClip()">スキップ</button>
-      <button class="btn btn-primary" onclick="saveClip()">リストに追加</button>
+    <div class="recv-field">
+      <label>URL</label>
+      <input type="text" id="recv-url" class="mono" readonly>
+    </div>
+    <div class="recv-actions">
+      <button class="btn btn-cancel" onclick="dismissRecv()">スキップ</button>
+      <button class="btn btn-primary" onclick="saveRecv()">リストに追加</button>
     </div>
   </div>
 </div>
 
-<!-- 常時表示ペーストボタン -->
+<!-- クリップボードボタン -->
 <div class="paste-bar">
-  <button class="paste-btn" id="paste-btn" onclick="checkClipboard()">
+  <button class="paste-btn" onclick="checkClipboard()">
     <span>📋</span><span>クリップボードからURLを追加</span>
   </button>
 </div>
@@ -439,32 +344,57 @@
   <input type="text" id="inp-title" placeholder="例: Googleマップ">
   <label>URL</label>
   <input type="url" id="inp-url" placeholder="https://">
-  <div class="clip-actions">
+  <div class="recv-actions">
     <button class="btn btn-cancel" onclick="closePanel()">キャンセル</button>
     <button class="btn btn-primary" onclick="addItem()">保存</button>
+  </div>
+</div>
+
+<!-- ブックマークレット設定パネル -->
+<div class="setup-panel" id="setup-panel">
+  <div class="setup-title">🔖 ブックマークレットの設定</div>
+  <div class="setup-step">
+    <strong>手順1</strong><br>
+    下のコードを長押し→全選択→コピー
+  </div>
+  <div class="bookmarklet-box" id="bookmarklet-code" onclick="copyBookmarklet()"></div>
+  <div class="copy-hint" id="copy-hint">タップでコピー</div>
+  <div class="setup-step" style="margin-top:1rem">
+    <strong>手順2</strong><br>
+    Chromeで任意のページをブックマーク登録<br>
+    → ブックマーク編集画面でURLを<br>
+    　 コピーしたコードに書き換える<br>
+    → 名前を「📎保存」などにする
+  </div>
+  <div class="setup-step">
+    <strong>手順3（使い方）</strong><br>
+    保存したいページでアドレスバーをタップ<br>
+    →「📎保存」と入力→タップ<br>
+    → このアプリにタイトル＋URLが送られる
   </div>
 </div>
 
 <div id="list"></div>
 <div class="no-results" id="no-results">該当なし</div>
 
-<button class="fab" id="fab" onclick="togglePanel()" title="手動で追加">＋</button>
+<div class="fabs">
+  <button class="fab fab-setup" onclick="toggleSetup()" title="ブックマークレット設定">🔖</button>
+  <button class="fab fab-main" id="fab" onclick="togglePanel()" title="手動で追加">＋</button>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 const STORAGE_KEY = 'urllist_v2';
+const APP_URL = 'https://i386dx16mhz.github.io/urllist/';
 let items = [];
-let clipUrl = '';
 let lastClipChecked = '';
 
 function load() {
   try { items = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
   catch(e) { items = []; }
 }
-
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-}
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
 
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -473,79 +403,98 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-/* ── クリップボード確認 ── */
-async function checkClipboard() {
-  try {
-    const text = await navigator.clipboard.readText();
-    if (!text || !text.match(/^https?:\/\//i)) {
-      showToast('クリップボードにURLがありません');
-      return;
-    }
-    // 直前と同じURLは重複チェック
-    if (text === lastClipChecked) {
-      showToast('このURLは確認済みです');
-      return;
-    }
-    showClipBanner(text.trim());
-  } catch(e) {
-    // 権限がない場合は手動入力へ誘導
-    showToast('クリップボードへのアクセスを許可してください');
-    togglePanel();
+/* ── ブックマークレット ── */
+function buildBookmarklet() {
+  const code = `javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);location.href='${APP_URL}?bm_url='+u+'&bm_title='+t;})();`;
+  document.getElementById('bookmarklet-code').textContent = code;
+}
+
+function copyBookmarklet() {
+  const code = document.getElementById('bookmarklet-code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    document.getElementById('copy-hint').textContent = 'コピーしました ✓';
+    setTimeout(() => document.getElementById('copy-hint').textContent = 'タップでコピー', 2000);
+  }).catch(() => showToast('長押しで手動コピーしてください'));
+}
+
+function toggleSetup() {
+  const p = document.getElementById('setup-panel');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) {
+    closePanel();
+    dismissRecv();
   }
 }
 
-function showClipBanner(url) {
-  clipUrl = url;
-  lastClipChecked = url;
-  document.getElementById('clip-url-preview').textContent = url;
-  document.getElementById('clip-title-input').value = '';
-  document.getElementById('clip-banner').classList.add('show');
-  setTimeout(() => document.getElementById('clip-title-input').focus(), 100);
+/* ── URLパラメータからブックマークレット受信 ── */
+function handleBookmarklet() {
+  const params = new URLSearchParams(window.location.search);
+  const url   = params.get('bm_url');
+  const title = params.get('bm_title');
+  if (!url) return;
+  history.replaceState({}, '', window.location.pathname);
+  showRecvBanner(decodeURIComponent(url), decodeURIComponent(title || ''), '🔖 ブックマークレットから受信');
 }
 
-function dismissClip() {
-  document.getElementById('clip-banner').classList.remove('show');
-  clipUrl = '';
+/* ── 受信バナー ── */
+function showRecvBanner(url, title, label) {
+  document.getElementById('recv-label').textContent = label || '📎 URLを受信';
+  document.getElementById('recv-url').value   = url;
+  document.getElementById('recv-title').value = title;
+  document.getElementById('recv-banner').classList.add('show');
+  closePanel();
+  document.getElementById('setup-panel').classList.remove('open');
 }
 
-function saveClip() {
-  if (!clipUrl) return;
-  const title = document.getElementById('clip-title-input').value.trim() || clipUrl.replace(/^https?:\/\//, '').split('/')[0];
-  items.unshift({ id: Date.now(), title, url: clipUrl });
-  save();
-  renderList();
-  dismissClip();
+function dismissRecv() {
+  document.getElementById('recv-banner').classList.remove('show');
+}
+
+function saveRecv() {
+  const url   = document.getElementById('recv-url').value.trim();
+  const title = document.getElementById('recv-title').value.trim() || url.replace(/^https?:\/\//, '').split('/')[0];
+  if (!url) return;
+  items.unshift({ id: Date.now(), title, url });
+  save(); renderList(); dismissRecv();
   showToast('追加しました ✓');
 }
 
-/* ── フォーカス時に自動チェック ── */
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') {
-    autoCheckClipboard();
+/* ── クリップボード ── */
+async function checkClipboard() {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (!text || !text.match(/^https?:\/\//i)) { showToast('クリップボードにURLがありません'); return; }
+    if (text === lastClipChecked) { showToast('このURLは確認済みです'); return; }
+    lastClipChecked = text.trim();
+    showRecvBanner(text.trim(), '', '📋 クリップボードから検出');
+  } catch(e) {
+    showToast('クリップボードへのアクセスを許可してください');
   }
-});
+}
 
-async function autoCheckClipboard() {
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState !== 'visible') return;
   try {
     const text = await navigator.clipboard.readText();
     if (!text || !text.match(/^https?:\/\//i)) return;
     if (text === lastClipChecked) return;
-    // すでにリストにあるURLはスキップ
     if (items.some(i => i.url === text.trim())) return;
-    showClipBanner(text.trim());
-  } catch(e) {
-    // 権限なし・エラーは無視
-  }
-}
+    lastClipChecked = text.trim();
+    showRecvBanner(text.trim(), '', '📋 クリップボードから検出');
+  } catch(e) {}
+});
 
-/* ── 手動追加パネル ── */
+/* ── 手動追加 ── */
 function togglePanel() {
   const panel = document.getElementById('add-panel');
   const fab   = document.getElementById('fab');
   const isOpen = panel.classList.toggle('open');
   fab.classList.toggle('open', isOpen);
-  if (isOpen) setTimeout(() => document.getElementById('inp-title').focus(), 100);
-  else {
+  if (isOpen) {
+    dismissRecv();
+    document.getElementById('setup-panel').classList.remove('open');
+    setTimeout(() => document.getElementById('inp-title').focus(), 100);
+  } else {
     document.getElementById('inp-title').value = '';
     document.getElementById('inp-url').value   = '';
   }
@@ -563,9 +512,7 @@ function addItem() {
   const url   = document.getElementById('inp-url').value.trim();
   if (!title && !url) { showToast('タイトルかURLを入力してください'); return; }
   items.unshift({ id: Date.now(), title: title || url, url });
-  save();
-  renderList();
-  closePanel();
+  save(); renderList(); closePanel();
   showToast('追加しました ✓');
 }
 
@@ -573,19 +520,17 @@ function addItem() {
 function deleteItem(id) {
   if (!confirm('削除しますか？')) return;
   items = items.filter(i => i.id !== id);
-  save();
-  renderList();
+  save(); renderList();
   showToast('削除しました');
 }
 
 function moveItem(id, dir) {
   const idx = items.findIndex(i => i.id === id);
-  if (idx === -1) return;
+  if (idx < 0) return;
   const ni = idx + dir;
   if (ni < 0 || ni >= items.length) return;
   [items[idx], items[ni]] = [items[ni], items[idx]];
-  save();
-  renderList();
+  save(); renderList();
 }
 
 /* ── 描画 ── */
@@ -610,11 +555,15 @@ function renderList() {
         <div class="icon">🔗</div>
         <p>まだURLがありません</p>
         <div class="hint">
-          <strong>📋 クリップボードから追加する方法</strong>
-          Chromeでページを開く<br>
-          → 共有 →「リンクをコピー」<br>
-          → このアプリに戻る<br>
-          → 自動でバナーが表示される
+          <strong>🔖 ブックマークレットで追加（推奨）</strong>
+          右下の 🔖 ボタンから設定する<br>
+          保存したいページでブックマークレットをタップ<br>
+          → タイトル＋URLが自動で送られる
+        </div>
+        <div class="hint">
+          <strong>📋 クリップボードから追加</strong>
+          Chromeで共有 →「リンクをコピー」<br>
+          → このアプリに戻ると自動検出
         </div>
       </div>`;
     noRes.style.display = 'none';
@@ -628,13 +577,11 @@ function renderList() {
   }
 
   noRes.style.display = 'none';
-
   listEl.innerHTML = filtered.map(item => {
     const realIdx = items.findIndex(i => i.id === item.id);
     const canUp   = realIdx > 0;
     const canDown = realIdx < items.length - 1;
     const displayUrl = (item.url||'').replace(/^https?:\/\//, '').replace(/\/$/, '') || '（URLなし）';
-
     return `
     <div class="card">
       <div class="card-main">
@@ -657,9 +604,9 @@ if ('serviceWorker' in navigator) {
 }
 
 load();
+buildBookmarklet();
+handleBookmarklet();
 renderList();
-// 起動時にもクリップボードチェック
-autoCheckClipboard();
 </script>
 </body>
 </html>
